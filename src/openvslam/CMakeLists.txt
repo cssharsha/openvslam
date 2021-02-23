@@ -6,6 +6,9 @@ set(spdlog_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/3rd/spdlog/include)
 # json
 set(json_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/3rd/json/include)
 
+# popl
+set(popl_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/3rd/popl/include)
+
 # g2o
 find_package(g2o REQUIRED
              COMPONENTS
@@ -110,10 +113,12 @@ target_include_directories(${PROJECT_NAME}
                            PUBLIC
                            $<BUILD_INTERFACE:${json_INCLUDE_DIR}>
                            $<BUILD_INTERFACE:${spdlog_INCLUDE_DIR}>
+                           $<BUILD_INTERFACE:${popl_INCLUDE_DIR}>
                            $<BUILD_INTERFACE:${BoW_INCLUDE_DIR}>
                            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/>
                            $<INSTALL_INTERFACE:include/openvslam/3rd/json/include>
                            $<INSTALL_INTERFACE:include/openvslam/3rd/spdlog/include>
+                           $<INSTALL_INTERFACE:include/openvslam/3rd/popl/include>
                            $<INSTALL_INTERFACE:${BoW_INCLUDE_DIR}>
                            $<INSTALL_INTERFACE:include/>)
 
@@ -162,6 +167,8 @@ install(FILES ${json_INCLUDE_DIR}/nlohmann/json.hpp ${json_INCLUDE_DIR}/nlohmann
         DESTINATION ${OPENVSLAM_INCLUDE_INSTALL_DIR}/3rd/json/include/nlohmann)
 install(DIRECTORY ${spdlog_INCLUDE_DIR}
         DESTINATION ${OPENVSLAM_INCLUDE_INSTALL_DIR}/3rd/spdlog)
+install(FILES ${popl_INCLUDE_DIR}/popl.hpp
+        DESTINATION ${OPENVSLAM_INCLUDE_INSTALL_DIR}/3rd/popl/include)
 
 # ----- Append subdirectory -----
 

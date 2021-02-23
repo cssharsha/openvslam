@@ -8,15 +8,6 @@ if(POLICY CMP0074)
     cmake_policy(SET CMP0074 OLD)
 endif()
 
-# digging into the root directory of OpenVSLAM
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${PROJECT_SOURCE_DIR} DIRECTORY)
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${DEFAULT_OpenVSLAM_DIR} DIRECTORY)
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${DEFAULT_OpenVSLAM_DIR} DIRECTORY)
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${DEFAULT_OpenVSLAM_DIR} DIRECTORY)
-
-set(OpenVSLAM_ROOT ${DEFAULT_OpenVSLAM_DIR} CACHE STRING "Root directory of OpenVSLAM")
-message(STATUS "Root directory of OpenVSLAM: ${OpenVSLAM_ROOT}")
-
 ##################
 # Set build type #
 ##################
@@ -103,6 +94,8 @@ find_package(rclcpp REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 
+find_package(openvslam REQUIRED PATHS /usr/local/lib/cmake/openvslam)
+
 # OpenCV
 find_package(OpenCV 3.3.1 QUIET)
 if(NOT OpenCV_FOUND)
@@ -115,8 +108,10 @@ message(STATUS "Use OpenCV ${OpenCV_VERSION}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # popl
-set(popl_INCLUDE_DIR ${OpenVSLAM_ROOT}/3rd/popl/include)
+set(popl_INCLUDE_DIR ${openvslam_INCLUDE_DIRS}/3rd/popl/include)
 include_directories(${popl_INCLUDE_DIR})
+
+include_directories(${PROJECT_SOURCE_DIR}/util)
 
 #########
 # Build #

@@ -4,9 +4,9 @@ add_executable(video_publisher video_publisher.cc)
 list(APPEND EXECUTABLE_TARGETS video_publisher)
 set_target_properties(video_publisher PROPERTIES OUTPUT_NAME video PREFIX "")
 
-add_executable(image_publisher image_publisher.cc ${OpenVSLAM_ROOT}/example/util/image_util.cc)
+add_executable(image_publisher image_publisher.cc ${PROJECT_SOURCE_DIR}/util/image_util.cc)
 list(APPEND EXECUTABLE_TARGETS image_publisher)
-target_include_directories(image_publisher PRIVATE ${OpenVSLAM_ROOT}/example)
+target_include_directories(image_publisher PRIVATE ${PROJECT_SOURCE_DIR}/util)
 set_target_properties(image_publisher PROPERTIES OUTPUT_NAME image PREFIX "")
 
 foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)

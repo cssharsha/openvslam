@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(openvslam LANGUAGES CXX C)
+project(openvslam_ros LANGUAGES CXX C)
 
 if(POLICY CMP0042)
     cmake_policy(SET CMP0042 NEW)
@@ -7,22 +7,6 @@ endif()
 if(POLICY CMP0074)
     cmake_policy(SET CMP0074 OLD)
 endif()
-
-# digging into the root directory of OpenVSLAM
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${PROJECT_SOURCE_DIR} DIRECTORY)
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${DEFAULT_OpenVSLAM_DIR} DIRECTORY)
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${DEFAULT_OpenVSLAM_DIR} DIRECTORY)
-get_filename_component(DEFAULT_OpenVSLAM_DIR ${DEFAULT_OpenVSLAM_DIR} DIRECTORY)
-
-set(OpenVSLAM_ROOT ${DEFAULT_OpenVSLAM_DIR} CACHE STRING "Root directory of OpenVSLAM")
-message(STATUS "Root directory of OpenVSLAM: ${OpenVSLAM_ROOT}")
-
-set(OpenVSLAM_SRC_DIR ${OpenVSLAM_ROOT}/src)
-message(STATUS "Source directory of OpenVSLAM: ${OpenVSLAM_SRC_DIR}")
-set(OpenVSLAM_LIB_DIR ${OpenVSLAM_ROOT}/build/lib CACHE STRING "Directory which contains the shared library of OpenVSLAM")
-message(STATUS "Library directory of OpenVSLAM: ${OpenVSLAM_LIB_DIR}")
-
-list(APPEND CMAKE_MODULE_PATH ${OpenVSLAM_ROOT}/cmake)
 
 ##################
 # Set build type #
@@ -132,11 +116,14 @@ find_package(rclcpp REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 
+# Change the absolute path in the future
+find_package(openvslam REQUIRED PATH /usr/local/lib/cmake/openvslam)
+
 # thread library
 find_package(Threads REQUIRED)
 
 # OpenVSLAM
-find_library(OpenVSLAM_LIB openvslam HINTS ${OpenVSLAM_LIB_DIR})
+find_library(OpenVSLAM_LIB openvslam)
 
 # OpenCV
 find_package(OpenCV 3.3.1 QUIET)
@@ -154,15 +141,15 @@ find_package(Eigen3 3.3 REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 # spdlog
-set(spdlog_INCLUDE_DIR ${OpenVSLAM_ROOT}/3rd/spdlog/include)
+set(spdlog_INCLUDE_DIR ${openvslam_INCLUDE_DIRS}/3rd/spdlog/include)
 include_directories(${spdlog_INCLUDE_DIR})
 
 # popl
-set(popl_INCLUDE_DIR ${OpenVSLAM_ROOT}/3rd/popl/include)
+set(popl_INCLUDE_DIR ${openvslam_INCLUDE_DIRS}/3rd/popl/include)
 include_directories(${popl_INCLUDE_DIR})
 
 # json
-set(json_INCLUDE_DIR ${OpenVSLAM_ROOT}/3rd/json/include)
+set(json_INCLUDE_DIR ${openvslam_INCLUDE_DIRS}/3rd/json/include)
 include_directories(${json_INCLUDE_DIR})
 
 # pangolin viewer

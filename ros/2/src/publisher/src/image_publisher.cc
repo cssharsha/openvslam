@@ -1,4 +1,4 @@
-#include <util/image_util.h>
+#include <image_util.h>
 
 #include <iostream>
 
